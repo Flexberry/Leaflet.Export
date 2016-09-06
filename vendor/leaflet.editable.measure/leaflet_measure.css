@@ -1,0 +1,5 @@
+.leaflet-draw-tooltip {
+  background: rgba(0, 0, 0, 0.5) !important;
+  color: #fff !important;
+  font: 12px/18px "Helvetica Neue", Arial, Helvetica, sans-serif;
+}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Leaflet.Editable based measure tools</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+<style>
+  body { margin:0; padding:0; }
+  #map { height: 400px; width:100%; }
+  #tooltip {
+    display: none;
+    opacity: 0.5;
+    padding: 10px;
+    border: 1px dashed #999;
+    font-family: sans-serif;
+    font-size: 12px;
+    height: 20px;
+    line-height: 20px;
+    z-index: 1000;
+    }
+</style>
+<link rel="stylesheet" href="./vendor/leaflet.editable.measure/leaflet_measure.css" />
+<link rel="stylesheet" href="./vendor//leaflet_1_0_0_rc2/leaflet.css" />
+<script src="./vendor/leaflet_1_0_0_rc2/leaflet-src.js"></script>
+<script src="./vendor/Leaflet.Editable.js"></script>
+
+<script src="./vendor/leaflet.editable.measure/leaflet_measure.js"></script>
+<script src="./vendor/leaflet.editable.measure/leaflet_basemeasure.js"></script>
+
+<script src="./leaflet_export.js"></script>
+</head>
+<body>
+<div id='map'></div>
+
+<script>
+var centerPoint = [58.0060984592271,56.2445307230809];
+// Create leaflet map.
+var map = L.map('map', {editable: true}).setView(centerPoint, 12);
+
+// Add OSM layer.
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+// Create custom measere tools instances.
+var measure = L.measureBase(map, { });
+var nMarker =1;
+</script>
+
+
+<button id="measureMarkerBtn" onclick="measure.markerBaseTool.startMeasure({title:'Точка'+nMarker++});">Измерить координаты</button>
+<button id="measureRectangleBtn" onclick="measure.rectangleBaseTool.startMeasure();">Измерить прямоугольник</button>
+<button id="measureCircleBtn" onclick="measure.circleBaseTool.startMeasure();">Измерить круг</button>
+<button id="measurePolilineBtn" onclick="measure.polylineBaseTool.startMeasure();">Измерить ломаную</button>
+<button id="measurePolygonBtn" onclick="measure.polygonBaseTool.startMeasure();">Измерить многоугольник</button>
+
+</body>
+</html>
