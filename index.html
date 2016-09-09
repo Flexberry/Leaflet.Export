@@ -68,9 +68,18 @@ var exportOptions =   {
     fillStyle: 'black',
     position: [100,200]
   },
-  exclude: exclude
+  exclude: exclude,
+  format: 'image/jpg'
 };
   var nMarker = 1;
+
+function exportMap(exportOptions) {
+  var exportedlement = map.export(exportOptions).then(
+    result => {
+      var i = 1;
+    }
+  );
+}
 </script>
 
 
@@ -79,7 +88,7 @@ var exportOptions =   {
 <button id="measureCircleBtn" onclick="measure.circleBaseTool.startMeasure();">Измерить круг</button>
 <button id="measurePolilineBtn" onclick="measure.polylineBaseTool.startMeasure();">Измерить ломаную</button>
 <button id="measurePolygonBtn" onclick="measure.polygonBaseTool.startMeasure();">Измерить многоугольник</button>
-<button id="measurePolygonBtn" onclick="map.export(exportOptions);">Экспорт</button>
+<button id="measurePolygonBtn" onclick="exportMap(exportOptions)">Экспорт</button>
 
 </body>
 </html>

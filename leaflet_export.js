@@ -14,6 +14,7 @@
       var mapElement = this._container;
       var caption = {};
       var exclude = [];
+      var format ='image/png';
       options = options || { caption: {}, exclude: []};
       if ('caption' in options) {
         caption = options['caption'];
@@ -32,6 +33,10 @@
 
       if ('exclude' in options && Array.isArray(options['exclude'])) {
         exclude = options['exclude'];
+      }
+
+      if ('format' in options) {
+        format = options['format'];
       }
 
       var hide = [];
@@ -64,8 +69,8 @@
         hide[i].style.visibility = 'hidden';
       }
       var _this = this;
-      var promise = html2canvas(mapElement, {
-        allowTaint: true,
+      return html2canvas(mapElement, {
+//         allowTaint: true,
         useCORS: true,
         logging: true,
       }).then(function(canvas) {
@@ -92,6 +97,8 @@
         }
 
         document.body.appendChild(canvas);
+        var ret = format === 'canvas' ? canvas : canvas.toDataURL(format);
+        return ret;
       }, function(reason) {
         var newReason = reason;
         alert(reason);
