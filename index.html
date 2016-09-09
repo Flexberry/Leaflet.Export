@@ -46,6 +46,21 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 // Create custom measere tools instances.
 var measure = L.measureBase(map, { });
+
+var zoom = document.getElementsByClassName('leaflet-control-zoom');
+var attribution = document.getElementsByClassName('leaflet-control-attribution');
+var attribution = document.getElementsByClassName('leaflet-control-attribution');
+var hide = [zoom, attribution];
+hide = [zoom];
+var exclude = [];
+for (var i in hide) {
+  var elements = hide[i];
+  for (j = 0; j < elements.length; j++) {
+    var element = elements.item(j);
+    exclude.push(element);
+  }
+}
+exclude.push('.leaflet-control-attribution');
 var exportOptions =   {
   caption: {
     text:'Карта',
@@ -53,8 +68,9 @@ var exportOptions =   {
     fillStyle: 'black',
     position: [100,200]
   },
-  exclude: []
+  exclude: exclude
 };
+  var nMarker = 1;
 </script>
 
 

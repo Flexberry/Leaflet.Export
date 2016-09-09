@@ -33,6 +33,35 @@
         exclude = options['exclude'];
       }
 
+      var hide = [];
+      for (var i = 0; i < exclude.length; i++) {
+        var selector = exclude[i];
+        switch (typeof selector) {
+          case 'object':
+            if ('style' in selector && 'visibility' in selector.style) {  //DOM element
+              hide.push(selector);
+            }
+            break;
+          case 'string':  //selector
+            var type = selector.substr(0,1);
+            switch (type) {
+              case '.': //class selector
+                var elements = document.getElementsByClassName(selector.substr(1));
+                for (var j = 0; j < elements.length; j++) {
+                  hide.push(elements.item(j));
+                }
+                break;
+              case '#':   //id selector
+                var element = document.getElementById(selector.substr(1));
+                if (element) {
+                  hide.push(element);
+                }
+            }
+        }
+      }
+      for (var i = 0; i < hide.length; i++) { //Hide exclude elements
+        hide[i].style.visibility = 'hidden';
+      }
       var mapElement = this._container;
       var _this = this;
       var promise = html2canvas(mapElement, {
@@ -40,6 +69,9 @@
         useCORS: true,
         logging: true,
       }).then(function(canvas) {
+        for (var i = 0; i < hide.length; i++) { //Unhide exclude elements
+          hide[i].style.visibility = '';
+        }
         if ('text' in caption) {
           var x, y;
           if ('position' in caption) {
@@ -62,6 +94,7 @@
         document.body.appendChild(canvas);
       }, function(reason) {
         var newReason = reason;
+        alert(reason);
       });
     }
 
