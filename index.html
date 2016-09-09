@@ -36,8 +36,9 @@
 
 <script>
 var centerPoint = [58.0060984592271,56.2445307230809];
+
 // Create leaflet map.
-var map = L.export('map', {editable: true}).setView(centerPoint, 12);
+var map = L.export('map', { editable: true } ).setView(centerPoint, 12);
 
 // Add OSM layer.
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -45,7 +46,15 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 // Create custom measere tools instances.
 var measure = L.measureBase(map, { });
-var nMarker =1;
+var exportOptions =   {
+  caption: {
+    text:'Карта',
+    font: '30px Arial',
+    fillStyle: 'black',
+    position: [100,200]
+  },
+  exclude: []
+};
 </script>
 
 
@@ -54,7 +63,7 @@ var nMarker =1;
 <button id="measureCircleBtn" onclick="measure.circleBaseTool.startMeasure();">Измерить круг</button>
 <button id="measurePolilineBtn" onclick="measure.polylineBaseTool.startMeasure();">Измерить ломаную</button>
 <button id="measurePolygonBtn" onclick="measure.polygonBaseTool.startMeasure();">Измерить многоугольник</button>
-<button id="measurePolygonBtn" onclick="map.export();">Экспорт</button>
+<button id="measurePolygonBtn" onclick="map.export(exportOptions);">Экспорт</button>
 
 </body>
 </html>
