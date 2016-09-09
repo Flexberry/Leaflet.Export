@@ -11,6 +11,7 @@
     },
 
     export: function(options){
+      var mapElement = this._container;
       var caption = {};
       var exclude = [];
       options = options || { caption: {}, exclude: []};
@@ -46,13 +47,13 @@
             var type = selector.substr(0,1);
             switch (type) {
               case '.': //class selector
-                var elements = document.getElementsByClassName(selector.substr(1));
+                var elements = mapElement.getElementsByClassName(selector.substr(1));
                 for (var j = 0; j < elements.length; j++) {
                   hide.push(elements.item(j));
                 }
                 break;
               case '#':   //id selector
-                var element = document.getElementById(selector.substr(1));
+                var element = mapElement.getElementById(selector.substr(1));
                 if (element) {
                   hide.push(element);
                 }
@@ -62,7 +63,6 @@
       for (var i = 0; i < hide.length; i++) { //Hide exclude elements
         hide[i].style.visibility = 'hidden';
       }
-      var mapElement = this._container;
       var _this = this;
       var promise = html2canvas(mapElement, {
         allowTaint: true,
