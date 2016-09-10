@@ -30,6 +30,8 @@
 <script src="./vendor/leaflet.editable.measure/leaflet_basemeasure.js"></script>
 
 <script src="./leaflet_export.js"></script>
+<script src="./leaflet_export_print.js"></script>
+<script src="./leaflet_export_download.js"></script>
 </head>
 <body>
 <div id='map'></div>
@@ -89,6 +91,12 @@ function exportMap(exportOptions) {
 <button id="measurePolilineBtn" onclick="measure.polylineBaseTool.startMeasure();">Измерить ломаную</button>
 <button id="measurePolygonBtn" onclick="measure.polygonBaseTool.startMeasure();">Измерить многоугольник</button>
 <button id="measurePolygonBtn" onclick="exportMap(exportOptions)">Экспорт</button>
+
+<br>
+<button id="exportBtn" onclick="exportMap(leafletMap);">Экспорт в изображение без заголовка</button>
+<button id="exportWithCaptionBtn" onclick="exportMap(leafletMap, { caption: 'My leaflet map' });">Экспорт в изображение с заголовком</button>
+<button id="printBtn" onclick="exportMap(leafletMap, { print: true });">Печать без заголовка</button>
+<button id="printWithCaptionBtn" onclick="exportMap(leafletMap, { caption: 'My leaflet map', print: true });">Печать с заголовком</button>
 
 </body>
 </html>
