@@ -40,7 +40,7 @@
 var centerPoint = [58.0060984592271,56.2445307230809];
 
 // Create leaflet map.
-var map = L.export('map', { editable: true } ).setView(centerPoint, 12);
+var map = L.map('map', { editable: true , exportable: true } ).setView(centerPoint, 12);
 
 // Add OSM layer.
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -76,7 +76,7 @@ var exportOptions =   {
   var nMarker = 1;
 
 function exportMap(exportOptions) {
-  var exportedlement = map.export(exportOptions).then(
+  var exportedlement = map.ExportTool.export(exportOptions).then(
     result => {
       var i = 1;
     }

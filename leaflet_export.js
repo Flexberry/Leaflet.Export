@@ -3,15 +3,16 @@
   /**
    * Базовое пространство имен для инструментов экпорта.
    */
-  L.Export =  L.Map.extend({
+  L.Export =  L.Class.extend({
     initialize: function (map, options) {
       options = options || {};
-      options.preferCanvas = true;
-      L.Map.prototype.initialize.call(this, map, options);
+      this._map = map;
+      if (!this._map.ExportTool) {
+        this._map.ExportTool = this;
+      }
     },
 
     export: function(options){
-      var mapElement = this._container;
       var caption = {};
       var exclude = [];
       var format ='image/png';
@@ -52,13 +53,13 @@
             var type = selector.substr(0,1);
             switch (type) {
               case '.': //class selector
-                var elements = mapElement.getElementsByClassName(selector.substr(1));
+                var elements = this._map._container.getElementsByClassName(selector.substr(1));
                 for (var j = 0; j < elements.length; j++) {
                   hide.push(elements.item(j));
                 }
                 break;
               case '#':   //id selector
-                var element = mapElement.getElementById(selector.substr(1));
+                var element = this._map._container.getElementById(selector.substr(1));
                 if (element) {
                   hide.push(element);
                 }
@@ -69,7 +70,7 @@
         hide[i].style.visibility = 'hidden';
       }
       var _this = this;
-      return html2canvas(mapElement, {
+      return html2canvas(this._map._container, {
 //         allowTaint: true,
         useCORS: true,
         logging: true,
@@ -113,5 +114,19 @@
   L.export = function(map, options) {
     return new L.Export(map, options);
   };
+
+
+  L.Map.mergeOptions({
+    preferCanvas: true
+  });
+
+  L.Map.addInitHook(function () {
+    this.whenReady(function () {
+      if (this.options.exportable || this.options.exportOptions) {
+        this.ExportTool = new L.Export(this, this.options.exportOptions);
+      }
+    });
+
+  });
 
 })(L);
