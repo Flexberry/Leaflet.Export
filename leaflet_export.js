@@ -6,13 +6,15 @@
   L.Export =  L.Class.extend({
     initialize: function (map, options) {
       options = options || {};
+      this.options = options;
       this._map = map;
-      if (!this._map.ExportTool) {
-        this._map.ExportTool = this;
+      if (!this._map.exportTool) {
+        this._map.exportTool = this;
       }
     },
 
     export: function(options){
+      L.Util.setOptions(this, options);
       var caption = {};
       var exclude = [];
       var format ='image/png';
@@ -45,7 +47,7 @@
         var selector = exclude[i];
         switch (typeof selector) {
           case 'object':
-            if ('style' in selector && 'visibility' in selector.style) {  //DOM element
+            if ('tagName' in selector) {  //DOM element
               hide.push(selector);
             }
             break;
@@ -67,7 +69,7 @@
         }
       }
       for (var i = 0; i < hide.length; i++) { //Hide exclude elements
-        hide[i].style.visibility = 'hidden';
+        hide[i].setAttribute('data-html2canvas-ignore', 'true');
       }
       var _this = this;
       return html2canvas(this._map._container, {
@@ -76,7 +78,7 @@
         logging: true,
       }).then(function(canvas) {
         for (var i = 0; i < hide.length; i++) { //Unhide exclude elements
-          hide[i].style.visibility = '';
+          hide[i].setAttribute('data-html2canvas-ignore', 'false');
         }
         if ('text' in caption) {
           var x, y;
@@ -115,7 +117,6 @@
     return new L.Export(map, options);
   };
 
-
   L.Map.mergeOptions({
     preferCanvas: true
   });
@@ -123,10 +124,9 @@
   L.Map.addInitHook(function () {
     this.whenReady(function () {
       if (this.options.exportable || this.options.exportOptions) {
-        this.ExportTool = new L.Export(this, this.options.exportOptions);
+        this.exportTool = new L.Export(this, this.options.exportOptions);
       }
     });
-
   });
 
 })(L);

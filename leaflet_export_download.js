@@ -10,7 +10,7 @@
       L.Export.prototype.initialize.call(this, map, options);
     },
 
-    printExport(options) {
+    printExport: function(options) {
 
     }
 
