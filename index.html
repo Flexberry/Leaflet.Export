@@ -79,6 +79,14 @@ function printMap(caption) {
     exclude: ['.leaflet-control-zoom'],
     format: 'image/png'
     };
+  if (caption) {
+    printOptions.caption = {
+      text: caption,
+      font: '30px Arial',
+      fillStyle: 'black',
+      position: [50, 50]
+    };
+  }
   map.exportPrintTool.printExport(printOptions);
 }
 </script>
@@ -95,7 +103,7 @@ function printMap(caption) {
 <button id="exportBtn" onclick="exportMap(leafletMap);">Экспорт в изображение без заголовка</button>
 <button id="exportWithCaptionBtn" onclick="exportMap(leafletMap, { caption: 'My leaflet map' });">Экспорт в изображение с заголовком</button>
 <button id="printBtn" onclick="printMap();">Печать без заголовка</button>
-<button id="printWithCaptionBtn" onclick="printMap( { caption: 'My leaflet map', print: true });">Печать с заголовком</button>
+<button id="printWithCaptionBtn" onclick="printMap('My leaflet map');">Печать с заголовком</button>
 
 </body>
 </html>

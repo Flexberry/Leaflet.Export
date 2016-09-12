@@ -100,7 +100,7 @@
         }
 
         document.body.appendChild(canvas);
-        var ret = format === 'canvas' ? canvas : canvas.toDataURL(format);
+        var ret = format === 'canvas' ? canvas : { data:canvas.toDataURL(format), width: canvas.width,  height: canvas.height, type: format};
         return ret;
       }, function(reason) {
         var newReason = reason;

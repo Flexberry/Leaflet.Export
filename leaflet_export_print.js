@@ -16,17 +16,18 @@
 
     printExport: function(options) {
       L.Util.setOptions(this, options);
+      var _this = this;
       this.export(this.options).then(
-        result = function(imgUrl) {
+        function(result) {
           var printWindow = window.open('', '_blank');
           if (printWindow) {
             var printDocument = printWindow.document;
             printDocument.write('<html><head><title>' + (options.caption ? options.caption : '') + '</title></head><body onload=\'window.print(); window.close();\'></body></html>');
 
             var img = printDocument.createElement('img');
-            img.height = canvas.height;
-            img.width = canvas.width;
-            img.src = imgUrl;
+            img.height = result.height;
+            img.width = result.width;
+            img.src = result.data;
 
             printDocument.body.appendChild(img);
 
