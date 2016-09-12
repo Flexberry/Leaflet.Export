@@ -80,7 +80,7 @@
         for (var i = 0; i < hide.length; i++) { //Unhide exclude elements
           hide[i].setAttribute('data-html2canvas-ignore', 'false');
         }
-        if ('text' in caption) {
+        if ('text' in caption && caption.text) {
           var x, y;
           if ('position' in caption) {
             x = caption.position[0];

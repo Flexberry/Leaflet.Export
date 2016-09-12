@@ -4,6 +4,10 @@
    * Базовое пространство имен для инструментов экпорта.
    */
   L.Export.Print =  L.Export.extend({
+    errors: {
+      popupWindowBlocked: 'Окно печати было заблокировано браузером. Пожалуйста разрешите всплывающие окна на этой странице',
+    },
+
     initialize: function (map, options) {
       options = options || {};
       this.options = options;
@@ -22,7 +26,7 @@
           var printWindow = window.open('', '_blank');
           if (printWindow) {
             var printDocument = printWindow.document;
-            printDocument.write('<html><head><title>' + (options.caption ? options.caption : '') + '</title></head><body onload=\'window.print(); window.close();\'></body></html>');
+            printDocument.write('<html><head><title>' + (options.text ? options.text : '') + '</title></head><body onload=\'window.print(); window.close();\'></body></html>');
 
             var img = printDocument.createElement('img');
             img.height = result.height;
@@ -34,7 +38,7 @@
             printDocument.close();
             printWindow.focus();
           } else {
-            throw new Error('Окно печати было заблокировано браузером. Пожалуйста разрешите всплывающие окна на этой странице');
+            throw new Error(this.errors.popupWindowBlocked);
           }
 
         }

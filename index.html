@@ -74,19 +74,32 @@ function exportMap() {
   );
 }
 
-function printMap(caption) {
-  var printOptions =   {
-    exclude: ['.leaflet-control-zoom'],
-    format: 'image/png'
+function downloadMap(caption) {
+  var downloadOptions =   {
+    exclude: ['.leaflet-control-zoom', '.leaflet-control-attribution'],
+    format: 'image/png',
+    fileName: 'Map.png'
     };
-  if (caption) {
-    printOptions.caption = {
+  downloadOptions.caption = {
       text: caption,
       font: '30px Arial',
       fillStyle: 'black',
       position: [50, 50]
     };
-  }
+  map.exportDownloadTool.downloadExport(downloadOptions);
+}
+
+function printMap(caption) {
+  var printOptions =   {
+    exclude: ['.leaflet-control-zoom'],
+    format: 'image/png'
+    };
+  printOptions.caption = {
+      text: caption,
+      font: '30px Arial',
+      fillStyle: 'black',
+      position: [50, 50]
+    };
   map.exportPrintTool.printExport(printOptions);
 }
 </script>
@@ -100,8 +113,8 @@ function printMap(caption) {
 <button id="measurePolygonBtn" onclick="exportMap()">Экспорт</button>
 
 <br>
-<button id="exportBtn" onclick="exportMap(leafletMap);">Экспорт в изображение без заголовка</button>
-<button id="exportWithCaptionBtn" onclick="exportMap(leafletMap, { caption: 'My leaflet map' });">Экспорт в изображение с заголовком</button>
+<button id="exportBtn" onclick="downloadMap();">Экспорт в изображение без заголовка</button>
+<button id="exportWithCaptionBtn" onclick="downloadMap('My leaflet map');">Экспорт в изображение с заголовком</button>
 <button id="printBtn" onclick="printMap();">Печать без заголовка</button>
 <button id="printWithCaptionBtn" onclick="printMap('My leaflet map');">Печать с заголовком</button>
 
