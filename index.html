@@ -50,9 +50,8 @@ var baseExportOptions = {
 };
 var map = L.map('map', {
   editable: true ,
-  exportOptions: baseExportOptions,
-  downloadOptions: baseExportOptions,
-  printOptions: baseExportOptions
+  printable: true,
+  downloadable: true,
   }).setView(centerPoint, 12);
 
 // Add OSM layer.
@@ -63,11 +62,17 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 var measure = L.measureBase(map, { });
 
 function exportMap() {
-  var exportOptions =   {
+  var exportOptions = {
+    caption: {
+      text:'Карта',
+      font: '30px Arial',
+      fillStyle: 'black',
+      position: [100,200]
+    },
     exclude: ['.leaflet-control-zoom', '.leaflet-control-attribution'],
     format: 'image/jpg'
-      };
-  var exportedlement = map.exportTool.export(exportOptions).then(
+  };
+  var exportedlement = map.export(exportOptions).then(
     result = function(value) {
       var i = 1;
     }
@@ -76,17 +81,17 @@ function exportMap() {
 
 function downloadMap(caption) {
   var downloadOptions =   {
+    caption: {
+      text: caption,
+      font: '30px Arial',
+      fillStyle: 'black',
+      position: [100,200]
+    },
     exclude: ['.leaflet-control-zoom', '.leaflet-control-attribution'],
     format: 'image/png',
     fileName: 'Map.png'
     };
-  downloadOptions.caption = {
-      text: caption,
-      font: '30px Arial',
-      fillStyle: 'black',
-      position: [50, 50]
-    };
-  map.exportDownloadTool.downloadExport(downloadOptions);
+  map.downloadExport(downloadOptions);
 }
 
 function printMap(caption) {
@@ -100,7 +105,7 @@ function printMap(caption) {
       fillStyle: 'black',
       position: [50, 50]
     };
-  map.exportPrintTool.printExport(printOptions);
+  map.printExport(printOptions);
 }
 </script>
 
