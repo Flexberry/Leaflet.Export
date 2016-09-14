@@ -127,6 +127,9 @@
       };
 
       this.supportedCanvasMimeTypes = function() {
+        if ('_supportedCanvasMimeTypes' in this) {
+          return this._supportedCanvasMimeTypes;
+        }
         var mimeTypes = {
           PNG:'image/png',
           JPEG: 'image/jpeg',
@@ -147,17 +150,17 @@
         ctx.lineWidth = 3;
         ctx.fillRect(10,10,30,30);
         ctx.strokeRect(10.5,10.5,30,30);
-        var ret = {};
+        this._supportedCanvasMimeTypes = {};
         for (var type in mimeTypes) {
           var mimeType = mimeTypes[type];
           var data = canvas.toDataURL(mimeType);
           var actualType = data.replace(/^data:([^;]*).*/, '$1');
           if (mimeType === actualType) {
-            ret[type] = mimeType;
+            this._supportedCanvasMimeTypes[type] = mimeType;
           }
         }
         document.body.removeChild(canvas);
-        return ret;
+        return this._supportedCanvasMimeTypes;
       };
 
       this.printExport = function(options) {
