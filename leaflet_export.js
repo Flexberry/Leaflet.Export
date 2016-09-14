@@ -1,7 +1,6 @@
 (function(L, undefined) {
   L.Map.addInitHook(function () {
     this.whenReady(function () {
-//       if (this.options.exportable || this.options.printable || this.options.downloadable) {
       L.Map.mergeOptions({ preferCanvas: true });
       if (!('exportError' in this)) {
         this.exportError = {
@@ -126,7 +125,41 @@
           alert(reason);
         });
       };
-//       }
+
+      this.supportedCanvasMimeTypes = function() {
+        var mimeTypes = {
+          PNG:'image/png',
+          JPEG: 'image/jpeg',
+          JPG: 'image/jpg',
+          GIF: 'image/gif',
+          BMP: 'image/bmp',
+          TIFF: 'image/tiff',
+          XICON: 'image/x-icon',
+          SVG: 'image/svg+xml',
+          WEBP: 'image/webp'
+        };
+        var canvas = document.createElement('canvas');
+        canvas.style.display = 'none';
+        canvas = document.body.appendChild(canvas);
+        var ctx = canvas.getContext('2d');
+        ctx.fillStyle = 'red';
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 3;
+        ctx.fillRect(10,10,30,30);
+        ctx.strokeRect(10.5,10.5,30,30);
+        var ret = {};
+        for (var type in mimeTypes) {
+          var mimeType = mimeTypes[type];
+          var data = canvas.toDataURL(mimeType);
+          var actualType = data.replace(/^data:([^;]*).*/, '$1');
+          if (mimeType === actualType) {
+            ret[type] = mimeType;
+          }
+        }
+        document.body.removeChild(canvas);
+        return ret;
+      };
+
       this.printExport = function(options) {
         var _this = this;
         this.export(options).then(

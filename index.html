@@ -32,8 +32,22 @@
 <script src="./leaflet_export.js"></script>
 </head>
 <body>
+
 <div id='map'></div>
 
+<button id="measureMarkerBtn" onclick="measure.markerBaseTool.startMeasure({title:'Точка'});">Измерить координаты</button>
+<button id="measureRectangleBtn" onclick="measure.rectangleBaseTool.startMeasure();">Измерить прямоугольник</button>
+<button id="measureCircleBtn" onclick="measure.circleBaseTool.startMeasure();">Измерить круг</button>
+<button id="measurePolilineBtn" onclick="measure.polylineBaseTool.startMeasure();">Измерить ломаную</button>
+<button id="measurePolygonBtn" onclick="measure.polygonBaseTool.startMeasure();">Измерить многоугольник</button>
+<button id="measurePolygonBtn" onclick="exportMap()">Экспорт</button>
+
+<br>
+<button id="exportBtn" onclick="downloadMap();">Экспорт в изображение без заголовка</button>
+<button id="exportWithCaptionBtn" onclick="downloadMap('My leaflet map');">Экспорт в изображение с заголовком</button>
+<button id="printBtn" onclick="printMap();">Печать без заголовка</button>
+<button id="printWithCaptionBtn" onclick="printMap('My leaflet map');">Печать с заголовком</button>
+<div><b>Поддерживаемые типы изображений:</b>&nbsp;<i><span id='suportedMimeTypes'></span></i></div>
 <script>
 var centerPoint = [58.0060984592271,56.2445307230809];
 
@@ -58,6 +72,13 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 // Create custom measere tools instances.
 var measure = L.measureBase(map, { });
+
+var mimeTypes = map.supportedCanvasMimeTypes();
+var mimeArray = [];
+for (var type in mimeTypes) {
+  mimeArray.push(mimeTypes[type]);
+}
+document.getElementById('suportedMimeTypes').innerHTML = mimeArray.join(',&nbsp;');
 
 function exportMap() {
   var exportOptions = {
@@ -106,20 +127,5 @@ function printMap(caption) {
   map.printExport(printOptions);
 }
 </script>
-
-
-<button id="measureMarkerBtn" onclick="measure.markerBaseTool.startMeasure({title:'Точка'});">Измерить координаты</button>
-<button id="measureRectangleBtn" onclick="measure.rectangleBaseTool.startMeasure();">Измерить прямоугольник</button>
-<button id="measureCircleBtn" onclick="measure.circleBaseTool.startMeasure();">Измерить круг</button>
-<button id="measurePolilineBtn" onclick="measure.polylineBaseTool.startMeasure();">Измерить ломаную</button>
-<button id="measurePolygonBtn" onclick="measure.polygonBaseTool.startMeasure();">Измерить многоугольник</button>
-<button id="measurePolygonBtn" onclick="exportMap()">Экспорт</button>
-
-<br>
-<button id="exportBtn" onclick="downloadMap();">Экспорт в изображение без заголовка</button>
-<button id="exportWithCaptionBtn" onclick="downloadMap('My leaflet map');">Экспорт в изображение с заголовком</button>
-<button id="printBtn" onclick="printMap();">Печать без заголовка</button>
-<button id="printWithCaptionBtn" onclick="printMap('My leaflet map');">Печать с заголовком</button>
-
 </body>
 </html>
