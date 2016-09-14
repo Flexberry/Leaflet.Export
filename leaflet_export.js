@@ -67,14 +67,14 @@
                   break;
                 case '$': //JQuery
                   var jQuerySelector = selector.trim().substr(1);
-                  if (jQuerySelector[0] !== '(') {
+                  if (jQuerySelector.substr(0,1) !== '(') {
                     throw new Error(this.exportError.wrongBeginSelector);
                   }
                   jQuerySelector = jQuerySelector.substr(1);
-                  if (jQuerySelector[-1] !== ')') {
+                  if (jQuerySelector.substr(-1) !== ')') {
                     throw new Error(this.exportError.wrongEndSelector);
                   }
-                  jQuerySelector = jQuerySelector.substr(0,-1);
+                  jQuerySelector = jQuerySelector.substr(0, jQuerySelector.length-1);
                   if (typeof jQuery !== 'undefined') {
                     var elements = $(jQuerySelector,this._container);
                     for (var j = 0; j < elements.length; j++) {
