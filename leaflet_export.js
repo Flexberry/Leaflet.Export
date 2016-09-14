@@ -71,7 +71,7 @@
                     throw new Error(this.exportError.wrongBeginSelector);
                   }
                   jQuerySelector = jQuerySelector.substr(1);
-                  if (jQuerySelector[-1] !== '(') {
+                  if (jQuerySelector[-1] !== ')') {
                     throw new Error(this.exportError.wrongEndSelector);
                   }
                   jQuerySelector = jQuerySelector.substr(0,-1);
