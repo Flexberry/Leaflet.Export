@@ -78,7 +78,7 @@
                   if (typeof jQuery !== 'undefined') {
                     var elements = $(jQuerySelector,this._container);
                     for (var j = 0; j < elements.length; j++) {
-                      hide.push(elements.item(j));
+                      hide.push(elements[i]);
                     }
                   } else {
                     throw new Error(this.exportError.jqueryNotAvailable);
