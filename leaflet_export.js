@@ -169,29 +169,25 @@
           delete options.beforePrint;
         }
 
-        this.export(options).then(
+        return this.export(options).then(
           beforePrint).then(
           function(result) {
-            return (new Promise(function (resolve, reject) {
-              resolve(result.data);
-              var printWindow = window.open('', '_blank');
-              if (printWindow) {
-                var printDocument = printWindow.document;
-                printDocument.write('<html><head><title>' + (options.text ? options.text : '') + '</title></head><body onload=\'window.print(); window.close();\'></body></html>');
+            var printWindow = window.open('', '_blank');
+            if (printWindow) {
+              var printDocument = printWindow.document;
+              printDocument.write('<html><head><title>' + (options.text ? options.text : '') + '</title></head><body onload=\'window.print(); window.close();\'></body></html>');
+              var img = printDocument.createElement('img');
+              img.height = result.height;
+              img.width = result.width;
+              img.src = result.data;
+              printDocument.body.appendChild(img);
+              printDocument.close();
+              printWindow.focus();
+            } else {
+              throw new Error(_this.exportError.popupWindowBlocked);
+            }
 
-                var img = printDocument.createElement('img');
-                img.height = result.height;
-                img.width = result.width;
-                img.src = result.data;
-
-                printDocument.body.appendChild(img);
-
-                printDocument.close();
-                printWindow.focus();
-              } else {
-                throw new Error(_this.exportError.popupWindowBlocked);
-              }
-            }));
+            return result;
           }
         );
       };
@@ -211,47 +207,43 @@
 
         var fileName = options.fileName;
         delete options.fileName;
-        this.export(options).then(
+        return this.export(options).then(
           beforeDownload).then(
           function(result) {
-            return (new Promise(function (resolve, reject) {
-              resolve(result.data);
-              var fileData = atob(result.data.split(',')[1]);
-              var arrayBuffer = new ArrayBuffer(fileData.length);
-              var view = new Uint8Array(arrayBuffer);
-              for (var i = 0; i < fileData.length; i++) {
-                view[i] = fileData.charCodeAt(i) & 0xff;
-              }
+            var fileData = atob(result.data.split(',')[1]);
+            var arrayBuffer = new ArrayBuffer(fileData.length);
+            var view = new Uint8Array(arrayBuffer);
+            for (var i = 0; i < fileData.length; i++) {
+              view[i] = fileData.charCodeAt(i) & 0xff;
+            }
 
-              var blob;
-              if (typeof Blob === 'function') {
-                blob = new Blob([arrayBuffer], { type: 'application/octet-stream' });
-              } else {
-                var blobBuilder = new (window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder);
-                blobBuilder.append(arrayBuffer);
-                blob = blobBuilder.getBlob('application/octet-stream');
-              }
-              if (window.navigator.msSaveOrOpenBlob) {
-                // IE не умеет открывать blob и data ссылки, но в нем есть специальный метод для скачивания blob в виде файлов.
-                window.navigator.msSaveBlob(blob, fileName);
-              } else {
-                var blobUrl = (window.URL || window.webkitURL).createObjectURL(blob);
+            var blob;
+            if (typeof Blob === 'function') {
+              blob = new Blob([arrayBuffer], { type: 'application/octet-stream' });
+            } else {
+              var blobBuilder = new (window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder);
+              blobBuilder.append(arrayBuffer);
+              blob = blobBuilder.getBlob('application/octet-stream');
+            }
 
-                var downloadLink = document.createElement('a');
-                downloadLink.style = 'display: none';
-                downloadLink.download = fileName;
-                downloadLink.href = blobUrl;
+            if (window.navigator.msSaveOrOpenBlob) {
+              // IE не умеет открывать blob и data ссылки, но в нем есть специальный метод для скачивания blob в виде файлов.
+              window.navigator.msSaveBlob(blob, fileName);
+            } else {
+              var blobUrl = (window.URL || window.webkitURL).createObjectURL(blob);
+              var downloadLink = document.createElement('a');
+              downloadLink.style = 'display: none';
+              downloadLink.download = fileName;
+              downloadLink.href = blobUrl;
+              // Для IE необходимо, чтобы ссылка была добавлена в тело документа.
+              document.body.appendChild(downloadLink);
+              // Кликаем по ссылке на скачивание изображения.
+              downloadLink.click();
+              // Удаляем ссылку из тела документа.
+              document.body.removeChild(downloadLink);
+            }
 
-                // Для IE необходимо, чтобы ссылка была добавлена в тело документа.
-                document.body.appendChild(downloadLink);
-
-                // Кликаем по ссылке на скачивание изображения.
-                downloadLink.click();
-
-                // Удаляем ссылку из тела документа.
-                document.body.removeChild(downloadLink);
-              }
-            }));
+            return result;
           }
         );
       };
