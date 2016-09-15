@@ -115,7 +115,10 @@ function downloadMap(caption) {
     fileName: 'Map.png',
     beforeDownload: beforeDownload
     };
-  map.downloadExport(downloadOptions);
+  var promise = map.downloadExport(downloadOptions);
+  var data = promise.then(function(result){
+     return result;
+  });
 }
 
 function beforePrint(result) {
@@ -134,7 +137,10 @@ function printMap(caption) {
       fillStyle: 'black',
       position: [50, 50]
     };
-  map.printExport(printOptions);
+  var promise = map.printExport(printOptions);
+  var data = promise.then(function(result){
+    return result;
+  });
 }
 </script>
 </body>
