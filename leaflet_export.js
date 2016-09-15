@@ -117,7 +117,7 @@
             ctx.fillText(caption.text,x , y);
           }
 
-          document.body.appendChild(canvas);
+//           document.body.appendChild(canvas);
           var ret = format === 'canvas' ? canvas : { data:canvas.toDataURL(format), width: canvas.width,  height: canvas.height, type: format};
           return ret;
         }, function(reason) {
@@ -182,6 +182,7 @@
               throw new Error(_this.exportError.popupWindowBlocked);
             }
 
+            return result.data;
           }
         );
       };
@@ -230,7 +231,7 @@
               // Удаляем ссылку из тела документа.
               document.body.removeChild(downloadLink);
             }
-
+            return result.data;
           }
         );
       };
