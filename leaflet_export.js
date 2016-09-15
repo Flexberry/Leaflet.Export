@@ -91,7 +91,6 @@
         }
         var _this = this;
         return html2canvas(this._container, {
-          //         allowTaint: true,
           useCORS: true,
           logging: true,
         }).then(function(canvas) {
@@ -182,10 +181,11 @@
               throw new Error(_this.exportError.popupWindowBlocked);
             }
 
-            return result.data;
+            return new Promise(function (resolve, reject) {resolve(result.data)});
           }
         );
       };
+
       this.downloadExport = function(options) {
         if (!('fileName' in options)) {
           throw new Error(this.exportError.emptyFilename);
@@ -231,7 +231,7 @@
               // Удаляем ссылку из тела документа.
               document.body.removeChild(downloadLink);
             }
-            return result.data;
+            return new Promise(function (resolve, reject) {resolve(result.data)});
           }
         );
       };
