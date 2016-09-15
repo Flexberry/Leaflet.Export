@@ -181,7 +181,6 @@
               throw new Error(_this.exportError.popupWindowBlocked);
             }
 
-//             return new Promise(function (resolve, reject) {resolve(result.data)});
             return result.data;
           }
         );
@@ -232,7 +231,6 @@
               // Удаляем ссылку из тела документа.
               document.body.removeChild(downloadLink);
             }
-//             return new Promise(function (resolve, reject) {resolve(result.data)});
             return result.data;
           }
         );
