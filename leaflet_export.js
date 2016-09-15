@@ -146,10 +146,7 @@
         canvas = document.body.appendChild(canvas);
         var ctx = canvas.getContext('2d');
         ctx.fillStyle = 'red';
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 3;
-        ctx.fillRect(10,10,30,30);
-        ctx.strokeRect(10.5,10.5,30,30);
+        ctx.fillRect(0,0,1,1);
         this._supportedCanvasMimeTypes = {};
         for (var type in mimeTypes) {
           var mimeType = mimeTypes[type];
