@@ -161,7 +161,7 @@
 
       this.printExport = function(options) {
         var _this = this;
-        this.export(options).then(
+        return this.export(options).then(
           function(result) {
             var printWindow = window.open('', '_blank');
             if (printWindow) {
@@ -181,7 +181,8 @@
               throw new Error(_this.exportError.popupWindowBlocked);
             }
 
-            return new Promise(function (resolve, reject) {resolve(result.data)});
+//             return new Promise(function (resolve, reject) {resolve(result.data)});
+            return result.data;
           }
         );
       };
@@ -193,7 +194,7 @@
 
         var fileName = options.fileName;
         delete options.fileName;
-        this.export(options).then(
+        return this.export(options).then(
           function(result) {
             var fileData = atob(result.data.split(',')[1]);
             var arrayBuffer = new ArrayBuffer(fileData.length);
@@ -231,7 +232,8 @@
               // Удаляем ссылку из тела документа.
               document.body.removeChild(downloadLink);
             }
-            return new Promise(function (resolve, reject) {resolve(result.data)});
+//             return new Promise(function (resolve, reject) {resolve(result.data)});
+            return result.data;
           }
         );
       };
