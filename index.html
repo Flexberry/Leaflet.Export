@@ -98,6 +98,10 @@ function exportMap() {
   );
 }
 
+function beforeDownload(result) {
+  return result;
+}
+
 function downloadMap(caption) {
   var downloadOptions =   {
     caption: {
@@ -108,15 +112,21 @@ function downloadMap(caption) {
     },
     exclude: ['.leaflet-control-zoom', '.leaflet-control-attribution'],
     format: 'image/png',
-    fileName: 'Map.png'
+    fileName: 'Map.png',
+    beforeDownload: beforeDownload
     };
   map.downloadExport(downloadOptions);
+}
+
+function beforePrint(result) {
+  return result;
 }
 
 function printMap(caption) {
   var printOptions =   {
     exclude: ['.leaflet-control-zoom'],
-    format: 'image/png'
+    format: 'image/png',
+    beforePrint: beforePrint
     };
   printOptions.caption = {
       text: caption,

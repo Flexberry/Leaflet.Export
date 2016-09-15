@@ -165,7 +165,16 @@
 
       this.printExport = function(options) {
         var _this = this;
+        var beforePrint = options.beforePrint;
+        if (typeof beforePrint !== 'function') {
+          beforePrint = function(result) {return result};
+        }
+        if ('beforePrint' in options) {
+          delete options.beforePrint;
+        }
+
         this.export(options).then(
+          beforePrint).then(
           function(result) {
             var printWindow = window.open('', '_blank');
             if (printWindow) {
@@ -188,14 +197,24 @@
           }
         );
       };
+
       this.downloadExport = function(options) {
         if (!('fileName' in options)) {
           throw new Error(this.exportError.emptyFilename);
         }
 
+        var beforeDownload = options.beforeDownload;
+        if (typeof beforeDownload !== 'function') {
+          beforeDownload = function(result) {return result};
+        }
+        if ('beforeDownload' in options) {
+          delete options.beforeDownload;
+        }
+
         var fileName = options.fileName;
         delete options.fileName;
         this.export(options).then(
+          beforeDownload).then(
           function(result) {
             var fileData = atob(result.data.split(',')[1]);
             var arrayBuffer = new ArrayBuffer(fileData.length);
