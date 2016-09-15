@@ -163,25 +163,26 @@
         var _this = this;
         return this.export(options).then(
           function(result) {
-            var printWindow = window.open('', '_blank');
-            if (printWindow) {
-              var printDocument = printWindow.document;
-              printDocument.write('<html><head><title>' + (options.text ? options.text : '') + '</title></head><body onload=\'window.print(); window.close();\'></body></html>');
+            return (new Promise(function (resolve, reject) {
+              resolve(result.data);
+              var printWindow = window.open('', '_blank');
+              if (printWindow) {
+                var printDocument = printWindow.document;
+                printDocument.write('<html><head><title>' + (options.text ? options.text : '') + '</title></head><body onload=\'window.print(); window.close();\'></body></html>');
 
-              var img = printDocument.createElement('img');
-              img.height = result.height;
-              img.width = result.width;
-              img.src = result.data;
+                var img = printDocument.createElement('img');
+                img.height = result.height;
+                img.width = result.width;
+                img.src = result.data;
 
-              printDocument.body.appendChild(img);
+                printDocument.body.appendChild(img);
 
-              printDocument.close();
-              printWindow.focus();
-            } else {
-              throw new Error(_this.exportError.popupWindowBlocked);
-            }
-
-            return result.data;
+                printDocument.close();
+                printWindow.focus();
+              } else {
+                throw new Error(_this.exportError.popupWindowBlocked);
+              }
+            }));
           }
         );
       };
@@ -195,43 +196,44 @@
         delete options.fileName;
         return this.export(options).then(
           function(result) {
-            var fileData = atob(result.data.split(',')[1]);
-            var arrayBuffer = new ArrayBuffer(fileData.length);
-            var view = new Uint8Array(arrayBuffer);
-            for (var i = 0; i < fileData.length; i++) {
-              view[i] = fileData.charCodeAt(i) & 0xff;
-            }
+            return (new Promise(function (resolve, reject) {
+              resolve(result.data);
+              var fileData = atob(result.data.split(',')[1]);
+              var arrayBuffer = new ArrayBuffer(fileData.length);
+              var view = new Uint8Array(arrayBuffer);
+              for (var i = 0; i < fileData.length; i++) {
+                view[i] = fileData.charCodeAt(i) & 0xff;
+              }
 
-            var blob;
-            if (typeof Blob === 'function') {
-              blob = new Blob([arrayBuffer], { type: 'application/octet-stream' });
-            } else {
-              var blobBuilder = new (window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder);
-              blobBuilder.append(arrayBuffer);
-              blob = blobBuilder.getBlob('application/octet-stream');
-            }
+              var blob;
+              if (typeof Blob === 'function') {
+                blob = new Blob([arrayBuffer], { type: 'application/octet-stream' });
+              } else {
+                var blobBuilder = new (window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder);
+                blobBuilder.append(arrayBuffer);
+                blob = blobBuilder.getBlob('application/octet-stream');
+              }
+              if (window.navigator.msSaveOrOpenBlob) {
+                // IE не умеет открывать blob и data ссылки, но в нем есть специальный метод для скачивания blob в виде файлов.
+                window.navigator.msSaveBlob(blob, fileName);
+              } else {
+                var blobUrl = (window.URL || window.webkitURL).createObjectURL(blob);
 
-            if (window.navigator.msSaveOrOpenBlob) {
-              // IE не умеет открывать blob и data ссылки, но в нем есть специальный метод для скачивания blob в виде файлов.
-              window.navigator.msSaveBlob(blob, fileName);
-            } else {
-              var blobUrl = (window.URL || window.webkitURL).createObjectURL(blob);
+                var downloadLink = document.createElement('a');
+                downloadLink.style = 'display: none';
+                downloadLink.download = fileName;
+                downloadLink.href = blobUrl;
 
-              var downloadLink = document.createElement('a');
-              downloadLink.style = 'display: none';
-              downloadLink.download = fileName;
-              downloadLink.href = blobUrl;
+                // Для IE необходимо, чтобы ссылка была добавлена в тело документа.
+                document.body.appendChild(downloadLink);
 
-              // Для IE необходимо, чтобы ссылка была добавлена в тело документа.
-              document.body.appendChild(downloadLink);
+                // Кликаем по ссылке на скачивание изображения.
+                downloadLink.click();
 
-              // Кликаем по ссылке на скачивание изображения.
-              downloadLink.click();
-
-              // Удаляем ссылку из тела документа.
-              document.body.removeChild(downloadLink);
-            }
-            return result.data;
+                // Удаляем ссылку из тела документа.
+                document.body.removeChild(downloadLink);
+              }
+            }));
           }
         );
       };

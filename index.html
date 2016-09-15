@@ -110,7 +110,10 @@ function downloadMap(caption) {
     format: 'image/png',
     fileName: 'Map.png'
     };
-  map.downloadExport(downloadOptions);
+  var promise = map.downloadExport(downloadOptions);
+  var data = promise.then(function(result){
+     return result;
+  });
 }
 
 function printMap(caption) {
@@ -124,7 +127,10 @@ function printMap(caption) {
       fillStyle: 'black',
       position: [50, 50]
     };
-  map.printExport(printOptions);
+  var promise = map.printExport(printOptions);
+  var data = promise.then(function(result){
+    return result;
+  });
 }
 </script>
 </body>
