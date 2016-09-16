@@ -31,19 +31,19 @@ Options:
 
 If developer specify a custom function afterRender() after the rendering stage it receive shaped canvas. The function may be additional processing the canvas or perform other actions before second stage (export canvas to image).
 Common template for afterRender is:
-  
-  afterRender(canvas) {
-    operators...
-    return canvas;
-  }
+
+    afterRender(canvas) {
+      operators...;
+      return canvas;
+    }
 
 Function afterExport is called after export canvas to image.
 Common template for afterRender is:
 
-  afterRender(dataURL) {
-    operators...
-    return dataURL;
-  }
+    afterRender(dataURL) {
+      operators...;
+      return dataURL;
+    }
 
 Exclude list can contain in any order next values:
   * excluded DOM-element;
