@@ -29,15 +29,17 @@ Options:
   * afterRender - function to be called after rendering map;
   * afterExport - function to be called after export map.
 
-If you specify a custom function afterRender() after the rendering stage it passed shaped canvas. The function may be additional processing the canvas or perform other actions before second stage (export canvas to image).
+If developer specify a custom function afterRender() after the rendering stage it receive shaped canvas. The function may be additional processing the canvas or perform other actions before second stage (export canvas to image).
 Common template for afterRender is:
+  
   afterRender(canvas) {
     operators...
     return canvas;
   }
 
-Function afterExport is called after export cnvas to image.
+Function afterExport is called after export canvas to image.
 Common template for afterRender is:
+
   afterRender(dataURL) {
     operators...
     return dataURL;
