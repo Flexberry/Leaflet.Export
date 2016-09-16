@@ -56,14 +56,34 @@
           caption = options['caption'];
           if ('position' in caption) {
             var position = caption.position;
-            if (!Array.isArray(position) && position.length !=2 )
-              if (position.length == 0 || typeof position[0] !== 'number'){
-                caption.position[0] = 0;
+            if (!Array.isArray(position)) {
+              position = [0, 0];
+            }
+            if (position.length !=2 ) {
+              if (position.length === 0){
+                position[0] = 0;
               }
-
-              if (position.length == 1 || typeof position[1] !== 'number') {
-                caption.position[1] = 0;
+              if (position.length === 1 ) {
+                position[1] = 0;
               }
+            }
+            if (typeof position[0] !== 'number') {
+              if (typeof position[0] === 'string') {
+                position[0] = parseInt(position[0]);
+                if (isNaN(position[0])) {
+                  position[0] = 0;
+                }
+              }
+            }
+            if (typeof position[1] !== 'number') {
+              if (typeof position[1] === 'string') {
+                position[1] = parseInt(position[1]);
+                if (isNaN(position[1])) {
+                  position[1] = 0;
+                }
+              }
+            }
+            caption.position = position;
           }
         }
 

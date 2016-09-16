@@ -118,7 +118,7 @@ function downloadMap(caption) {
     format: 'image/png',
     fileName: 'Map.png',
     afterRender: afterRender,
-    afterExport: transmitFunction
+    afterExport: afterExport
 };
   var promise = map.downloadExport(downloadOptions);
   var data = promise.then(function(result){
