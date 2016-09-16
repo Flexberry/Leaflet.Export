@@ -98,7 +98,11 @@ function exportMap() {
   );
 }
 
-function beforeDownload(result) {
+function afterRender(result) {
+  return result;
+}
+
+function afterExport(result) {
   return result;
 }
 
@@ -113,24 +117,22 @@ function downloadMap(caption) {
     exclude: ['.leaflet-control-zoom', '.leaflet-control-attribution'],
     format: 'image/png',
     fileName: 'Map.png',
-    beforeDownload: beforeDownload
-    };
+    afterRender: afterRender,
+    afterExport: transmitFunction
+};
   var promise = map.downloadExport(downloadOptions);
   var data = promise.then(function(result){
      return result;
   });
 }
 
-function beforePrint(result) {
-  return result;
-}
-
 function printMap(caption) {
   var printOptions =   {
     exclude: ['.leaflet-control-zoom'],
     format: 'image/png',
-    beforePrint: beforePrint
-    };
+    afterRender: afterRender,
+    afterExport: afterExport
+};
   printOptions.caption = {
       text: caption,
       font: '30px Arial',

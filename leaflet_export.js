@@ -12,6 +12,41 @@
         };
       }
 
+
+      this.supportedCanvasMimeTypes = function() {
+        if ('_supportedCanvasMimeTypes' in this) {
+          return this._supportedCanvasMimeTypes;
+        }
+        var mimeTypes = {
+          PNG:'image/png',
+          JPEG: 'image/jpeg',
+          JPG: 'image/jpg',
+          GIF: 'image/gif',
+          BMP: 'image/bmp',
+          TIFF: 'image/tiff',
+          XICON: 'image/x-icon',
+          SVG: 'image/svg+xml',
+          WEBP: 'image/webp'
+        };
+        var canvas = document.createElement('canvas');
+        canvas.style.display = 'none';
+        canvas = document.body.appendChild(canvas);
+        var ctx = canvas.getContext('2d');
+        ctx.fillStyle = 'red';
+        ctx.fillRect(0,0,1,1);
+        this._supportedCanvasMimeTypes = {};
+        for (var type in mimeTypes) {
+          var mimeType = mimeTypes[type];
+          var data = canvas.toDataURL(mimeType);
+          var actualType = data.replace(/^data:([^;]*).*/, '$1');
+          if (mimeType === actualType) {
+            this._supportedCanvasMimeTypes[type] = mimeType;
+          }
+        }
+        document.body.removeChild(canvas);
+        return this._supportedCanvasMimeTypes;
+      };
+
       this.export = function(options){
         var caption = {};
         var exclude = [];
@@ -38,6 +73,16 @@
 
         if ('format' in options) {
           format = options['format'];
+        }
+
+        var afterRender = options.afterRender;
+        if (typeof afterRender !== 'function') {
+          afterRender = function(result) {return result};
+        }
+
+        var afterExport = options.afterExport;
+        if (typeof afterExport !== 'function') {
+          afterExport = function(result) {return result};
         }
 
         var hide = [];
@@ -90,10 +135,12 @@
           hide[i].setAttribute('data-html2canvas-ignore', 'true');
         }
         var _this = this;
+
         return html2canvas(this._container, {
           useCORS: true,
           logging: true,
-        }).then(function(canvas) {
+        }).then(afterRender).then(
+        function(canvas) {
           for (var i = 0; i < hide.length; i++) { //Unhide exclude elements
             hide[i].setAttribute('data-html2canvas-ignore', 'false');
           }
@@ -122,55 +169,14 @@
         }, function(reason) {
           var newReason = reason;
           alert(reason);
-        });
-      };
-
-      this.supportedCanvasMimeTypes = function() {
-        if ('_supportedCanvasMimeTypes' in this) {
-          return this._supportedCanvasMimeTypes;
-        }
-        var mimeTypes = {
-          PNG:'image/png',
-          JPEG: 'image/jpeg',
-          JPG: 'image/jpg',
-          GIF: 'image/gif',
-          BMP: 'image/bmp',
-          TIFF: 'image/tiff',
-          XICON: 'image/x-icon',
-          SVG: 'image/svg+xml',
-          WEBP: 'image/webp'
-        };
-        var canvas = document.createElement('canvas');
-        canvas.style.display = 'none';
-        canvas = document.body.appendChild(canvas);
-        var ctx = canvas.getContext('2d');
-        ctx.fillStyle = 'red';
-        ctx.fillRect(0,0,1,1);
-        this._supportedCanvasMimeTypes = {};
-        for (var type in mimeTypes) {
-          var mimeType = mimeTypes[type];
-          var data = canvas.toDataURL(mimeType);
-          var actualType = data.replace(/^data:([^;]*).*/, '$1');
-          if (mimeType === actualType) {
-            this._supportedCanvasMimeTypes[type] = mimeType;
-          }
-        }
-        document.body.removeChild(canvas);
-        return this._supportedCanvasMimeTypes;
+        }).then(afterExport)
+        ;
       };
 
       this.printExport = function(options) {
         var _this = this;
-        var beforePrint = options.beforePrint;
-        if (typeof beforePrint !== 'function') {
-          beforePrint = function(result) {return result};
-        }
-        if ('beforePrint' in options) {
-          delete options.beforePrint;
-        }
 
         return this.export(options).then(
-          beforePrint).then(
           function(result) {
             var printWindow = window.open('', '_blank');
             if (printWindow) {
@@ -197,18 +203,9 @@
           throw new Error(this.exportError.emptyFilename);
         }
 
-        var beforeDownload = options.beforeDownload;
-        if (typeof beforeDownload !== 'function') {
-          beforeDownload = function(result) {return result};
-        }
-        if ('beforeDownload' in options) {
-          delete options.beforeDownload;
-        }
-
         var fileName = options.fileName;
         delete options.fileName;
         return this.export(options).then(
-          beforeDownload).then(
           function(result) {
             var fileData = atob(result.data.split(',')[1]);
             var arrayBuffer = new ArrayBuffer(fileData.length);
