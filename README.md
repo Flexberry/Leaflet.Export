@@ -6,7 +6,7 @@ The following methods are added to the class:
   * export(exportOptions) - create a map canvas or image in a specified format;
   * exportDownload(downloadOptions) - save map image to specified file;
   * exportPrint(printOptions) - print map image;
-  * supportedCanvasMimeTypes() - generates a list of supported data browser images formats for canvas.
+  * supportedCanvasMimeTypes() - generates a list of supported images formats for canvas.
 
 ### export(exportOptions)
 Method export  create a map canvas or image in a specified format.
