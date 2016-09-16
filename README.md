@@ -53,10 +53,14 @@ Exclude list can contain in any order next values:
 
 ### exportDownload(downloadOptions)
 Method exportDownload() calls the method export() to form the map image and stores the image in the specified file.
+
 In addition to the options of the method export() method exportDownload()supports option fileName.
-Use afterRender() and afterExport() functions developer can intercept control after this stages and perform additional actions.
+
+Using afterRender() and afterExport() functions developer can intercept control after this stages and perform additional actions.
 
 ### exportPrint(printOptions)
 Method exportDownload() calls the method export() to form the map image prints the image.
+
 Methods options consistent with the method of export options ()
-Use afterRender() and afterExport() functions developer can intercept control after this stages and perform additional actions.
+
+Using afterRender() and afterExport() functions developer can intercept control after this stages and perform additional actions.
