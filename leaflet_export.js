@@ -157,8 +157,7 @@
         var _this = this;
 
         return html2canvas(this._container, {
-          useCORS: true,
-          logging: true,
+          useCORS: true
         }).then(afterRender).then(
         function(canvas) {
           for (var i = 0; i < hide.length; i++) { //Unhide exclude elements
