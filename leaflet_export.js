@@ -161,7 +161,7 @@
         }).then(afterRender).then(
         function(canvas) {
           for (var i = 0; i < hide.length; i++) { //Unhide exclude elements
-            hide[i].setAttribute('data-html2canvas-ignore', 'false');
+            hide[i].removeAttribute('data-html2canvas-ignore');
           }
           if ('text' in caption && caption.text) {
             var x, y;
