@@ -105,6 +105,8 @@
           afterExport = function(result) {return result};
         }
 
+        var container = options.container || this._container;
+
         var hide = [];
         for (var i = 0; i < exclude.length; i++) {
           var selector = exclude[i];
@@ -118,13 +120,13 @@
               var type = selector.substr(0,1);
               switch (type) {
                 case '.': //class selector
-                  var elements = this._container.getElementsByClassName(selector.substr(1));
+                  var elements = container.getElementsByClassName(selector.substr(1));
                   for (var j = 0; j < elements.length; j++) {
                     hide.push(elements.item(j));
                   }
                   break;
                 case '#':   //id selector
-                  var element = this._container.getElementById(selector.substr(1));
+                  var element = container.getElementById(selector.substr(1));
                   if (element) {
                     hide.push(element);
                   }
@@ -140,7 +142,7 @@
                   }
                   jQuerySelector = jQuerySelector.substr(0, jQuerySelector.length-1);
                   if (typeof jQuery !== 'undefined') {
-                    var elements = $(jQuerySelector,this._container);
+                    var elements = $(jQuerySelector, container);
                     for (var j = 0; j < elements.length; j++) {
                       hide.push(elements[i]);
                     }
@@ -156,7 +158,7 @@
         }
         var _this = this;
 
-        return html2canvas(this._container, {
+        return html2canvas(container, {
           useCORS: true
         }).then(afterRender).then(
         function(canvas) {
