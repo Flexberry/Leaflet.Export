@@ -195,9 +195,11 @@
       };
 
       this.printExport = function(options) {
-        var _this = this;
+        options = options || {};
+        var exportMethod = options.export || this.export;
 
-        return this.export(options).then(
+        var _this = this;
+        return exportMethod(options).then(
           function(result) {
             var printWindow = window.open('', '_blank');
             if (printWindow) {
@@ -220,13 +222,17 @@
       };
 
       this.downloadExport = function(options) {
+        options = options || {};
         if (!('fileName' in options)) {
           throw new Error(this.exportError.emptyFilename);
         }
 
+        var exportMethod = options.export || this.export;
         var fileName = options.fileName;
         delete options.fileName;
-        return this.export(options).then(
+
+        var _this = this;
+        return exportMethod(options).then(
           function(result) {
             var fileData = atob(result.data.split(',')[1]);
             var arrayBuffer = new ArrayBuffer(fileData.length);
