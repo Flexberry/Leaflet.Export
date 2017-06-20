@@ -1,0 +1,17 @@
+{
+    "name": "leaflet.export",
+    "version": "0.1.0",
+    "homepage": "https://github.com/Flexberry/Leaflet.Export",
+    "license": "MIT",
+    "main": [
+        "leaflet_export.js"
+    ],
+    "ignore": [
+        "**/.*",
+        "bower_components"
+    ],
+    "dependencies": {
+        "leaflet": "1.0.1",
+        "html2canvas": "master"
+    }
+}
