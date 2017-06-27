@@ -260,6 +260,32 @@
 
       this.downloadExport = function (options) {
         options = options || {};
+        
+        if (Ember.isArray(options)) {
+          return this._runTasks(options, 0);
+        } else {
+          return this._downloadExport(options);
+        }
+      };
+
+      this._runTasks = function(options, index) {
+        let _this = this;
+        let i = index;
+
+        return this._downloadExport(options[i]).then(function(result) {
+          i++;
+
+          if (i < options.length) {
+            return _this._runTasks(options, i).then(function(tasksResult) {
+              return [result].concat(tasksResult);
+            });
+          } else {
+            return [result];
+          }
+        });
+      }
+
+      this._downloadExport = function(options) {
         if (!('fileName' in options)) {
           throw new Error(this.exportError.emptyFilename);
         }
@@ -312,7 +338,7 @@
             return result;
           }
         );
-      };
+      }
     });
   });
 })(L);
