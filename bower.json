@@ -12,6 +12,6 @@
     ],
     "dependencies": {
         "leaflet": "1.0.1",
-        "html2canvas": "master"
+        "html2canvas": "0.5.0-beta4"
     }
 }
