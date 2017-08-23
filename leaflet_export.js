@@ -233,42 +233,73 @@
 
       this.printExport = function (options) {
         options = options || {};
-        var exportMethod = options.export || this.export;
-
         var _this = this;
+        var images = [];
+
+        var _runPrintTasks = function (options, index) {
+          var exportMethod = options[index].export || _this.export;
+          return exportMethod(options[index]).then(
+            function (result) {
+              images.push(result);
+              if (index < options.length - 1) {
+                return _runPrintTasks(options, index + 1);
+              }
+
+              return images;
+            }
+          );
+        };
+
+        if (Array.isArray(options)) {
+          return _runPrintTasks(options, 0).then(
+            function(result) {
+              return _this._printExport(options, result);
+            }
+          );
+        }
+
+        var exportMethod = options.export || this.export;
         return exportMethod(options).then(
           function (result) {
-            var printWindow = window.open('', '_blank');
-            if (printWindow) {
-              var printDocument = printWindow.document;
-              printDocument.write('<html><head><title>' + (options.text ? options.text : '') + '</title></head><body onload=\'window.print(); window.close();\'></body></html>');
-              var img = printDocument.createElement('img');
-              img.height = result.height;
-              img.width = result.width;
-              img.src = result.data;
-              printDocument.body.appendChild(img);
-              printDocument.close();
-              printWindow.focus();
-            } else {
-              throw new Error(_this.exportError.popupWindowBlocked);
-            }
-
-            return result;
+            return _this._printExport(options, [result]);
           }
         );
+      };
+
+      this._printExport = function (options, images) {
+        var printWindow = window.open('', '_blank');
+        if (printWindow) {
+          var printDocument = printWindow.document;
+          printDocument.write('<html><head><style>@media print { @page { padding: 0; margin: 0; } }</style><title>' +
+           (options.text ? options.text : '') + '</title></head><body onload=\'window.print(); window.close();\'></body></html>');
+          images.forEach(function(image) {
+            var img = printDocument.createElement('img');
+            img.height = image.height - 20;
+            img.width = image.width - 10;
+            img.src = image.data;
+            printDocument.body.appendChild(img);
+          });
+
+          printDocument.close();
+          printWindow.focus();
+        } else {
+          throw new Error(_this.exportError.popupWindowBlocked);
+        }
+
+        return images;
       };
 
       this.downloadExport = function (options) {
         options = options || {};
 
         if (Array.isArray(options)) {
-          return this._runTasks(options, 0);
+          return this._runDownloadTasks(options, 0);
         } else {
           return this._downloadExport(options);
         }
       };
 
-      this._runTasks = function(options, index) {
+      this._runDownloadTasks = function(options, index) {
         var _this = this;
         var i = index;
 
@@ -276,7 +307,7 @@
           i++;
 
           if (i < options.length) {
-            return _this._runTasks(options, i).then(function(tasksResult) {
+            return _this._runDownloadTasks(options, i).then(function(tasksResult) {
               return [result].concat(tasksResult);
             });
           } else {
