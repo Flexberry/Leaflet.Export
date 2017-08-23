@@ -283,7 +283,7 @@
           printDocument.close();
           printWindow.focus();
         } else {
-          throw new Error(_this.exportError.popupWindowBlocked);
+          throw new Error(this.exportError.popupWindowBlocked);
         }
 
         return images;
