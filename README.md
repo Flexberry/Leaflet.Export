@@ -4,8 +4,8 @@ Additional methods to L.map class provides export and print maps
 ## API
 The following methods are added to the class:
   * export(exportOptions) - create a map canvas or image in a specified format;
-  * exportDownload(downloadOptions) - save map image to specified file;
-  * exportPrint(printOptions) - print map image;
+  * downloadExport(downloadOptions) - save map image to specified file;
+  * printExport(printOptions) - print map image;
   * supportedCanvasMimeTypes() - generates a list of supported images formats for canvas.
 
 ### export(exportOptions)
@@ -48,10 +48,12 @@ Options:
     }
     ```
 
-### exportDownload(downloadOptions)
-Method exportDownload() calls the method export() to form the map image and stores the image in the specified file.
-In addition to the options of the method export(), method exportDownload() supports option fileName.
+### downloadExport(downloadOptions)
+Method downloadExport() calls the method export() to form the map image and stores the image in the specified file.
+In addition to the options of the method export(), method downloadExport() supports option fileName.
+For several images download, downloadOptions must be an array.
 
-### exportPrint(printOptions)
-Method exportDownload() calls the method export() to form the map image prints the image.
-Methods options consistent with the options the of method export().
+### printExport(printOptions)
+Method printExport() calls the method export() to form the map image prints the image.
+Methods options consistent with the options of the method export().
+For several images print, printOptions must be an array.
