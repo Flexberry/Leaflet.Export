@@ -59,8 +59,7 @@
         var format = 'image/png';
         options = options || {
           caption: {},
-          exclude: [],
-          logging: false
+          exclude: []
         };
 
         if ('caption' in options) {
@@ -186,7 +185,7 @@
         var _this = this;
 
         return html2canvas(container, {
-          logging: options['logging'],
+          logging: options['logging'] || false,
           useCORS: true
         }).then(afterRender).then(
           function (canvas) {
