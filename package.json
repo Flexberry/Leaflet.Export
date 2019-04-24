@@ -8,16 +8,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iredmedia/Leaflet.Export.git"
+    "url": "git+https://github.com/magamig/Leaflet.Export.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/iredmedia/Leaflet.Export/issues"
+    "url": "https://github.com/magamig/Leaflet.Export/issues"
   },
-  "homepage": "https://github.com/iredmedia/Leaflet.Export#readme",
+  "homepage": "https://github.com/magamig/Leaflet.Export#readme",
   "dependencies": {
-    "leaflet": "1.2.0",
-    "html2canvas": "0.5.0-beta4"
+    "html2canvas": "0.5.0-beta4",
+    "leaflet": "1.2.0"
   }
 }

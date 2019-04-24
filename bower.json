@@ -1,7 +1,7 @@
 {
     "name": "leaflet-export",
     "version": "0.2.0",
-    "homepage": "https://github.com/Flexberry/Leaflet.Export",
+    "homepage": "https://github.com/magamig/Leaflet.Export",
     "license": "MIT",
     "main": [
         "leaflet_export.js"

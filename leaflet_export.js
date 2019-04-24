@@ -8,11 +8,11 @@ var html2canvas = require('html2canvas');
       });
       if (!('exportError' in this)) {
         this.exportError = {
-          wrongBeginSelector: 'Селектор JQuery не имеет начальной скобки (',
-          wrongEndSelector: 'Селектор JQuery не заканчивается скобкой )',
-          jqueryNotAvailable: 'В опциях используется JQuery селектор, но JQuery не подключен.Подключите JQuery или используйте DOM-селекторы .class, #id или DOM-элементы',
-          popupWindowBlocked: 'Окно печати было заблокировано браузером. Пожалуйста разрешите всплывающие окна на этой странице',
-          emptyFilename: 'При выгрузке карты в виде файла не указано его имя'
+          wrongBeginSelector: 'The jQuery selector does not have an initial bracket (.',
+          wrongEndSelector: 'The jQuery selector does not end with a bracket ).',
+          jqueryNotAvailable: 'The options use jQuery selector, but jQuery is not connected. Connect jQuery or use DOM selectors .class, #id or DOM elements.',
+          popupWindowBlocked: 'The print window was blocked by the browser. Please allow pop-ups on this page.',
+          emptyFilename: 'When downloading the map as a file, its name was not specified.'
         };
       }
 
