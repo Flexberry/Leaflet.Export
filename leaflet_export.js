@@ -1,5 +1,3 @@
-var html2canvas = require('html2canvas');
-
 (function (L, undefined) {
   L.Map.addInitHook(function () {
     this.whenReady(function () {
