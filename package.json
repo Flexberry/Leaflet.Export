@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/magamig/Leaflet.Export.git"
+    "url": "git+https://github.com/Flexberry/Leaflet.Export.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/magamig/Leaflet.Export/issues"
+    "url": "https://github.com/Flexberry/Leaflet.Export/issues"
   },
-  "homepage": "https://github.com/magamig/Leaflet.Export#readme",
+  "homepage": "https://github.com/Flexberry/Leaflet.Export#readme",
   "dependencies": {
     "html2canvas": "0.5.0-beta4",
     "leaflet": "1.2.0"
