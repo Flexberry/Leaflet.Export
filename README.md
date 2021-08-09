@@ -47,6 +47,8 @@ Options:
       return dataURL;
     }
     ```
+  * logging - default: false :
+    * true, false
 
 ### downloadExport(downloadOptions)
 Method downloadExport() calls the method export() to form the map image and stores the image in the specified file.

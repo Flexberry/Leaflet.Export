@@ -1,0 +1,23 @@
+{
+  "name": "leaflet.export",
+  "version": "1.1.0",
+  "description": "Additional methods to L.map class provides export and print maps",
+  "main": "leaflet_export.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Flexberry/Leaflet.Export.git"
+  },
+  "author": "Flexberry Team, community",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Flexberry/Leaflet.Export/issues"
+  },
+  "homepage": "https://github.com/Flexberry/Leaflet.Export#readme",
+  "dependencies": {
+    "html2canvas": "0.5.0-beta4",
+    "leaflet": "1.2.0"
+  }
+}
