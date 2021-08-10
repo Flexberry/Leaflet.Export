@@ -1,6 +1,6 @@
 {
   "name": "leaflet-export",
-  "version": "0.3.0-beta.1",
+  "version": "1.2.0-beta.1",
   "homepage": "https://github.com/Flexberry/Leaflet.Export",
   "license": "MIT",
   "main": [
@@ -11,7 +11,7 @@
     "bower_components"
   ],
   "dependencies": {
-    "leaflet": "1.3.1",
+    "leaflet": "1.7.1",
     "html2canvas": "0.5.0-beta4"
   }
 }
