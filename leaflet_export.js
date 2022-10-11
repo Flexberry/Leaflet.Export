@@ -278,6 +278,10 @@
             img.height = image.height - 20;
             img.width = image.width - 10;
             img.src = image.data;
+            if (Array.isArray(options) && options[index] && options[index].fitWidth) {
+              img.style.width = '100%';
+              img.style.height = 'auto';
+            }
             printDocument.body.appendChild(img);
           });
 
